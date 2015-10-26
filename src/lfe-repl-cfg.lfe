@@ -1,7 +1,7 @@
 (defmodule lfe-repl-cfg
   (export all))
 
-(include-lib "lfe-repl/include/compose.lfe")
+(include-file "include/compose.lfe")
 
 (defun reread (state)
   (case (find state)

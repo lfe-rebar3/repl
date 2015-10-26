@@ -1,7 +1,7 @@
 (defmodule lfe-repl-util
   (export all))
 
-(include-lib "lfe-repl/include/compose.lfe")
+(include-file "include/compose.lfe")
 
 
 (defun name (state)
