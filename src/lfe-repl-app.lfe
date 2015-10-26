@@ -1,7 +1,7 @@
 (defmodule lfe-repl-app
   (export all))
 
-(include-lib "clj/include/compose.lfe")
+(include-lib "lfe-repl/include/compose.lfe")
 
 (defun boot-existing-apps (state)
   (case (find-bootable-apps state)
