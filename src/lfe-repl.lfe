@@ -35,9 +35,9 @@
     `#(ok ,(rebar_state:add_provider state provider))))
 
 (defun do (state)
-  (lfe-repl-setup:name state)
-  (lfe-repl-setup:paths state)
-  (lfe-repl-setup:repl)
+  (lfe-repl-setup:set-name state)
+  (lfe-repl-setup:set-paths state)
+  (lfe-repl-setup:prep-repl)
   (lfe-repl-app:boot-apps state)
   (lfe-repl-setup:simulate-proc-lib)
   (case (register 'rebar_agent (self))

@@ -21,7 +21,7 @@
 
 
 
-(defun name (state)
+(defun set-name (state)
   (let* ((`#(,opts ,_) (rebar_state:command_parsed_args state))
          (name (proplists:get_value 'name opts))
          (sname (proplists:get_value 'sname opts)))
@@ -36,13 +36,13 @@
           "Cannot have both short and long node names defined."
           '())))))
 
-(defun paths (state)
+(defun set-paths (state)
   ;; Add lib dirs to path
   (code:add_pathsa (rebar_state:code_paths state 'all_deps))
   ;; Add project app test paths
   (add-test-paths state))
 
-(defun repl ()
+(defun prep-repl ()
     ;; Scan all processes for any with references to the old user and save them
     ;; to update later
     (let ((needs-update (lists:filtermap #'needs-update?/1 (erlang:processes))))
