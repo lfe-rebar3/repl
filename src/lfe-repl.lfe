@@ -9,8 +9,7 @@
 (defun namespace () 'lfe)                   ; All LFE plugins need to have this
 (defun provider-name () 'repl)
 (defun short-desc () "The LFE rebar3 LFE REPL plugin.")
-(defun deps ()
-  '(#(default app_discovery)))
+(defun deps () '())
 
 ;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;;; Public API
