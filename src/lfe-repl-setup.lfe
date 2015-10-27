@@ -142,4 +142,4 @@
     ('true
       'ok)
     (_
-      (error #(registration-error "Failed to register rebar agent process."))))
+      (error #(registration-error "Failed to register rebar agent process.")))))
