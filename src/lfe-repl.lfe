@@ -40,17 +40,18 @@
   (lfe-repl-setup:prep-repl)
   (lfe-repl-app:boot-apps state)
   (lfe-repl-setup:simulate-proc-lib)
-  (case (register 'rebar_agent (self))
-    ('true 'ok)
-    (_ (error #(registration-error "Failed to register rebar agent process."))))
+  (lfe-repl-setup:register-agent (self))
+  (rebar_api:debug "Initializing rebar_agent ..." '())
   (case (rebar_agent:init state)
     (`#(ok ,gen-state)
+      (rebar_api:debug "Starting rebar_agent event loop ..." '())
       (gen_server:enter_loop 'rebar_agent
                              '()
                              gen-state
                              #(local rebar_agent)
                              'hibernate))
-    (_ (error #(init-error "Failed to initialize rebar agent state."))))
+    (_
+      (error #(init-error "Failed to initialize rebar agent state."))))
   `#(ok ,state))
 
 (defun format_error (reason)

@@ -4,6 +4,7 @@
 (include-lib "clj/include/compose.lfe")
 
 (defun set-name (state)
+  (rebar_api:debug "Setting up name ..." '())
   (let* ((`#(,opts ,_) (rebar_state:command_parsed_args state))
          (name (proplists:get_value 'name opts))
          (sname (proplists:get_value 'sname opts)))
@@ -20,12 +21,14 @@
           '())))))
 
 (defun set-paths (state)
+  (rebar_api:debug "Setting up paths ..." '())
   ;; Add lib dirs to path
   (code:add_pathsa (rebar_state:code_paths state 'all_deps))
   ;; Add project app test paths
   (add-test-paths state))
 
 (defun prep-repl ()
+    (rebar_api:debug "Prep'ing REPL ..." '())
     ;; Scan all processes for any with references to the old user and save them
     ;; to update later
     (let ((needs-update (lists:filtermap #'needs-update?/1 (erlang:processes))))
@@ -76,6 +79,7 @@
 
 
 (defun simulate-proc-lib ()
+  (rebar_api:debug "Simulating proc lib ..." '())
   (let ((fake-parent (spawn_link (lambda () (timer:sleep 'infinity)))))
     (put '$ancestors `(,fake-parent))
     (put '$initial_call #(rebar_agent init 1))))
@@ -131,3 +135,11 @@
       (list "test")
       (filename:join)
       (code:add_path)))
+
+(defun register-agent (pid)
+  (rebar_api:debug "Registering rebar_agent ..." '())
+  (case (register 'rebar_agent pid)
+    ('true
+      'ok)
+    (_
+      (error #(registration-error "Failed to register rebar agent process."))))

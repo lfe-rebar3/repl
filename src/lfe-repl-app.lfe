@@ -56,6 +56,7 @@
                       "applications in production, consider using releases "
                       "(http://www.rebar3.org/v3.0/docs/releases)")
                   '())
+  (rebar_api:debug "Booting apps ..." '())
   (->> apps
        (load-apps-normalized)
        (lists:map #'application:ensure_all_started/1)
