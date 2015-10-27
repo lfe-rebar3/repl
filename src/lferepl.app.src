@@ -1,4 +1,4 @@
-{application, 'lfe-repl',
+{application, 'lferepl',
  [{description, "The LFE rebar3 REPL plugin"},
   {vsn, "0.1.0"},
   {registered, []},

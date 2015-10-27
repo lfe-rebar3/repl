@@ -2,7 +2,7 @@
 ;;;; starting up an Erlang shell:
 ;;;;    https://github.com/rebar/rebar3/blob/6637ec45481b9ae37a3ed84c264eb0dbbe76628d/src/rebar_prv_shell.erl
 ;;;;
-(defmodule lfe-repl
+(defmodule lferepl
   (behaviour provider)
   (export all))
 
