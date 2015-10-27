@@ -34,6 +34,7 @@
     (let ((needs-update (lists:filtermap #'needs-update?/1 (erlang:processes))))
 
       ;; Terminate the current user
+      (rebar_api:debug "Terminating current user ..." '())
       (supervisor:terminate_child 'kernel_sup 'user)
       ;; Start a new shell (this also starts a new user under the correct group)
       (rebar_api:debug "Starting LFE REPL process ..." '())
