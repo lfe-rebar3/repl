@@ -1,25 +1,7 @@
 (defmodule lfe-repl-setup
   (export all))
 
-(defmacro ->
-  ((x) x)
-  ((x sexp) (when (is_list sexp))
-   `(,(car sexp) ,x ,@(cdr sexp)))
-  ((x sexp)
-   `(list ,sexp ,x))
-  ((x sexp . sexps)
-   `(-> (-> ,x ,sexp) ,@sexps)))
-
-(defmacro ->>
-  ((x) x)
-  ((x sexp) (when (is_list sexp))
-   `(,(car sexp) ,@(cdr sexp) ,x))
-  ((x sexp)
-   `(list ,sexp ,x))
-  ((x sexp . sexps)
-   `(->> (->> ,x ,sexp) ,@sexps)))
-
-
+(include-lib "clj/include/compose.lfe")
 
 (defun set-name (state)
   (let* ((`#(,opts ,_) (rebar_state:command_parsed_args state))
