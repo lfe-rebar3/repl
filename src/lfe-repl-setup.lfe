@@ -1,4 +1,4 @@
-(defmodule lfe-repl-util
+(defmodule lfe-repl-setup
   (export all))
 
 (defmacro ->
