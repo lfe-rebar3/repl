@@ -40,17 +40,16 @@
       ;; Set any process that had a reference to the old user's group leader to
       ;; the new user process. Catch the race condition when the Pid exited
       ;; after the liveness check.
-      ;;(catch
-      ;;  (lists:map #'update-group-leader/1 needs-update))
+      (catch
+        (lists:map #'update-group-leader/1 needs-update))
       (try
         (progn
           ;; Snable error_logger's tty output
-          ;;(error_logger:swap_handler 'tty)
+          (error_logger:swap_handler 'tty)
           ;; Disable the simple error_logger (which may have been added multiple
           ;; times). removes at most the error_logger added by init and the
           ;; error_logger added by the tty handler
-          ;;(remove-error-handler 3)
-          )
+          (remove-error-handler 3))
         (catch
           (`#(,err ,msg ,trace) ; may fail with custom loggers
             (rebar_api:debug "Logger changes failed for ~p:~p (~p)"

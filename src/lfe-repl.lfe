@@ -37,23 +37,22 @@
 (defun do (state)
   (lfe-repl-setup:set-name state)
   (lfe-repl-setup:set-paths state)
-  ;;(lfe-repl-setup:prep-repl)
-  (lfe_shell:server)
-  (lfe-repl-app:boot-apps state))
-  ;;(lfe-repl-setup:simulate-proc-lib)
-  ; (lfe-repl-setup:register-agent (self))
-  ; (rebar_api:debug "Initializing rebar_agent ..." '())
-  ; (case (rebar_agent:init state)
-  ;   (`#(ok ,gen-state)
-  ;     (rebar_api:debug "Starting rebar_agent event loop ..." '())
-  ;     (gen_server:enter_loop 'rebar_agent
-  ;                            '()
-  ;                            gen-state
-  ;                            #(local rebar_agent)
-  ;                            'hibernate))
-  ;   (_
-  ;     (error #(init-error "Failed to initialize rebar agent state."))))
-  ; `#(ok ,state))
+  (lfe-repl-setup:prep-repl)
+  (lfe-repl-app:boot-apps state)
+  (lfe-repl-setup:simulate-proc-lib)
+  (lfe-repl-setup:register-agent (self))
+  (rebar_api:debug "Initializing rebar_agent ..." '())
+  (case (rebar_agent:init state)
+    (`#(ok ,gen-state)
+      (rebar_api:debug "Starting rebar_agent event loop ..." '())
+      (gen_server:enter_loop 'rebar_agent
+                             '()
+                             gen-state
+                             #(local rebar_agent)
+                             'hibernate))
+    (_
+      (error #(init-error "Failed to initialize rebar agent state."))))
+  `#(ok ,state))
 
 (defun format_error (reason)
   (io_lib:format "~p" `(,reason)))
