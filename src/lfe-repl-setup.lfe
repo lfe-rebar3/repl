@@ -45,7 +45,7 @@
       (try
         (progn
           ;; Snable error_logger's tty output
-          (error_logger:swap_handler 'tty)
+          ;;(error_logger:swap_handler 'tty)
           ;; Disable the simple error_logger (which may have been added multiple
           ;; times). removes at most the error_logger added by init and the
           ;; error_logger added by the tty handler
