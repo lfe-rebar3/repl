@@ -35,11 +35,16 @@
     `#(ok ,(rebar_state:add_provider state provider))))
 
 (defun do (state)
+  (try
+    (progn
   (lfe-repl-setup:set-name state)
   (lfe-repl-setup:set-paths state)
   (lfe-repl-setup:prep-repl)
   (lfe-repl-app:boot-apps state)
   (lfe-repl-setup:simulate-proc-lib)
+  )
+    (catch (err (progn (io:format "Exception: ~p~n" `(,err))
+      (error err)))))
   (case (register 'rebar_agent (self))
     ('true 'ok)
     (_ (error #(registration-error "Failed to register rebar agent process."))))
