@@ -40,8 +40,8 @@
       ;; Set any process that had a reference to the old user's group leader to
       ;; the new user process. Catch the race condition when the Pid exited
       ;; after the liveness check.
-      (catch
-        (lists:map #'update-group-leader/1 needs-update))
+      ;;(catch
+      ;;  (lists:map #'update-group-leader/1 needs-update))
       (try
         (progn
           ;; Snable error_logger's tty output
