@@ -38,7 +38,7 @@
       ;;(supervisor:terminate_child 'kernel_sup 'user)
       ;; Start a new shell (this also starts a new user under the correct group)
       (rebar_api:debug "Starting LFE REPL process ..." '())
-      (lfe_shell:start)
+      (lfe_shell:server)
       ;; Wait until processes have been registered
       (wait-until-user-started 3000)
       ;; Set any process that had a reference to the old user's group leader to
