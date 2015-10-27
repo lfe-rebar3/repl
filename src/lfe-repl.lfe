@@ -40,7 +40,7 @@
   ;;(lfe-repl-setup:prep-repl)
   (lfe_shell:server)
   (lfe-repl-app:boot-apps state)
-  (lfe-repl-setup:simulate-proc-lib)
+  ;;(lfe-repl-setup:simulate-proc-lib)
   (lfe-repl-setup:register-agent (self))
   (rebar_api:debug "Initializing rebar_agent ..." '())
   (case (rebar_agent:init state)
