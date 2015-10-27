@@ -131,7 +131,7 @@
       (_ 'ok))))
 
 (defun add-test-paths (state)
-  (list:map #'add-app-test-path/1 (rebar_state:project_apps state))
+  (lists:map #'add-app-test-path/1 (rebar_state:project_apps state))
   (add-cwd-test-path state))
 
 (defun add-app-test-path (app)
