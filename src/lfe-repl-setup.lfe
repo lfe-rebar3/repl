@@ -32,10 +32,6 @@
     ;; Scan all processes for any with references to the old user and save them
     ;; to update later
     (let ((needs-update (lists:filtermap #'needs-update?/1 (erlang:processes))))
-
-      ;; Terminate the current user
-      (rebar_api:debug "Terminating current user ..." '())
-      ;;(supervisor:terminate_child 'kernel_sup 'user)
       ;; Start a new shell (this also starts a new user under the correct group)
       (rebar_api:debug "Starting LFE REPL process ..." '())
       (lfe_shell:server)
@@ -53,7 +49,8 @@
           ;; Disable the simple error_logger (which may have been added multiple
           ;; times). removes at most the error_logger added by init and the
           ;; error_logger added by the tty handler
-          (remove-error-handler 3))
+          ;;(remove-error-handler 3)
+          )
         (catch
           (`#(,err ,msg ,trace) ; may fail with custom loggers
             (rebar_api:debug "Logger changes failed for ~p:~p (~p)"
