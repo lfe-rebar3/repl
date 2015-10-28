@@ -6,7 +6,7 @@
   (behaviour provider)
   (export all))
 
-(defun namespace () 'lfe)                   ; All LFE plugins need to have this
+(defun namespace () 'lfe)
 (defun provider-name () 'repl)
 (defun short-desc () "The LFE rebar3 LFE REPL plugin.")
 (defun deps () '())
