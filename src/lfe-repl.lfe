@@ -65,7 +65,8 @@
   (io_lib:format
     (++ "~n~s~n~n"
         "Start an LFE REPL for a project with its dependencies preloaded, "
-        "similar to 'lfe -pa ebin -pa deps/*/ebin' with support for -name "
+        "similar to~n"
+        "'lfe -pa ebin -pa deps/*/ebin' with support for -name "
         "and -sname parameters."
         "~n")
     `(,desc)))
