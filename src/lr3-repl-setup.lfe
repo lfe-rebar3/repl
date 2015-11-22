@@ -39,7 +39,7 @@
     ;; to update later
     (let ((needs-update (lists:filtermap #'needs-update?/1 (erlang:processes))))
       ;; Start a new shell (this also starts a new user under the correct group)
-      (rebar_api:debug "Starting LFE REPL process ..." '())
+      (rebar_api:debug "\tStarting LFE REPL process ..." '())
       (spawn #'lfe_shell:server/0)
       ;; Wait until processes have been registered
       (wait-until-user-started 3000)
@@ -58,7 +58,7 @@
           (remove-error-handler 3))
         (catch
           (`#(,err ,msg ,trace) ; may fail with custom loggers
-            (rebar_api:debug "Logger changes failed for ~p:~p (~p)"
+            (rebar_api:debug "\tLogger changes failed for ~p:~p (~p)"
                              `(,err ,msg ,trace))
             'hope-for-best)))))
 
@@ -146,4 +146,6 @@
     ('true
       'ok)
     (_
-      (error #(registration-error "Failed to register rebar agent process.")))))
+      (let ((msg "Failed to register rebar agent process"))
+        (rebar_api:error msg '())
+        (error #(registration-error msg))))))
