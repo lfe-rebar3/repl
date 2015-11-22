@@ -25,7 +25,7 @@
   (let ((paths (rebar_state:code_paths state 'all_deps)))
     (lists:foreach
       (lambda (x)
-        (rebar_api:debug "Adding path: ~p" x))
+        (rebar_api:debug "Adding path: ~p" `(,x)))
       paths)
     ;; Add lib dirs to path
     (code:add_pathsa paths))
