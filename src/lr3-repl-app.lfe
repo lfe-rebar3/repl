@@ -60,9 +60,12 @@
   (->> apps
        (rebar_state:project_apps)
        (load-apps-normalized)
-       (lists:map #'application:ensure_all_started/1)
-       (lists:foreach #'report-boot-status/1))
+       (boot-and-report))
   'ok)
+
+(defun boot-and-report (apps)
+  (lists:map #'application:ensure_all_started/1 apps)
+  (lists:foreach #'report-boot-status/1 apps))
 
 (defun report-boot-status
   ((`#(ok ,booted))
