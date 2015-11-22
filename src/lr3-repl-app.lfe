@@ -38,7 +38,7 @@
 (defun filter-loaded (app loaded)
   (case (not (lists:keymember app 1 loaded))
     ('true `#(true ,app))
-    ('false 'false)))
+    (_ 'false)))
 
 (defun load-app (app)
   (case (application:load app)
@@ -52,7 +52,7 @@
       'error)))
 
 (defun boot-apps (apps)
-  (rebar_api:warn (++ "The rebar3 shell is a development tool; to deploy "
+  (rebar_api:warn (++ "The rebar3 lfe REPL is a development tool; to deploy "
                       "applications in production, consider using releases "
                       "(http://www.rebar3.org/v3.0/docs/releases)")
                   '())
