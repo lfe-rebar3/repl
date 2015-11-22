@@ -36,8 +36,8 @@
 
 (defun do (state)
   (rebar_api:info "All deps: ~p" `(,(rebar_state:all_deps state)))
-  (rebar_state:update_code_paths
-    state )
+  ;;(rebar_state:update_code_paths
+  ;;  state )
   (code:add_pathsa
     (rebar_state:code_paths state 'all_deps))
   (lr3-repl-setup:set-name state)
