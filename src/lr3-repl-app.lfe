@@ -53,8 +53,8 @@
 
 (defun boot-apps (apps)
   (rebar_api:warn (++ "The rebar3 lfe REPL is a development tool; to deploy "
-                      "applications in production, consider using releases "
-                      "(http://www.rebar3.org/v3.0/docs/releases)")
+                      "applications in production, ~n     consider using "
+                      "releases (http://www.rebar3.org/v3.0/docs/releases)")
                   '())
   (rebar_api:debug "Booting apps ..." '())
   (->> apps
