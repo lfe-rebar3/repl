@@ -8,6 +8,7 @@
   (let* ((`#(,opts ,_) (rebar_state:command_parsed_args state))
          (name (proplists:get_value 'name opts))
          (sname (proplists:get_value 'sname opts)))
+    (rebar_api:debug "")
     (case `#(,name ,sname)
       (#(undefined undefined)
         'ok)
@@ -23,13 +24,11 @@
 (defun set-paths (state)
   (rebar_api:debug "Setting up paths ..." '())
   (let ((paths (rebar_state:code_paths state 'all_deps)))
-    (rebar_api:debug "Paths: ~p" `(,paths))
-    (lists:foreach
-      (lambda (x)
-        (rebar_api:debug "Adding path: ~p" `(,x)))
-      paths)
+    (rebar_api:debug "\tPaths: ~p" `(,paths))
     ;; Add lib dirs to path
-    (code:add_pathsa paths))
+    ;; We do the next for debugging, instead of all at once
+    (lists:foreach #'add-path/1 paths)
+    ;;(code:add_pathsa paths))
     ;; Add project app test paths
   (add-test-paths state))
 
@@ -47,7 +46,7 @@
       ;; the new user process. Catch the race condition when the Pid exited
       ;; after the liveness check.
       (catch
-        (lists:map #'update-group-leader/1 needs-update))
+        (lists:foreach #'update-group-leader/1 needs-update))
       (try
         (progn
           ;; Enable error_logger's tty output
@@ -79,7 +78,9 @@
 (defun update-group-leader
   ((pid)
     (if (is_process_alive pid)
-        (erlang:group_leader (whereis 'user) pid))))
+      (progn
+        (rebar_api:debug "Updating group leader ..." '())
+        (erlang:group_leader (whereis 'user) pid)))))
 
 
 (defun simulate-proc-lib ()
@@ -138,7 +139,11 @@
   (-> path
       (list "test")
       (filename:join)
-      (code:add_path)))
+      (add-path)))
+
+(defun add-path (path)
+  (rebar_api:debug "\tAdding path ~p ..." `(,path))
+  (code:add_path path))
 
 (defun register-agent (pid)
   (rebar_api:debug "Registering rebar_agent ..." '())

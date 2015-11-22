@@ -11,7 +11,7 @@
 (defun short-desc () "The LFE rebar3 LFE REPL plugin.")
 (defun deps () '())
 (defun task-options ()
-  `(#(name undefined "name" atom "Gives a long name to the node.")
+    `(#(name undefined "name" atom "Gives a long name to the node.")
     #(sname undefined "sname" atom "Gives a short name to the node.")
     #(apps undefined "apps" atom
       ,(++ "A list of apps to boot before starting the shell. (E.g. --apps "
