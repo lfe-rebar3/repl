@@ -30,7 +30,9 @@
     (lists:foreach #'add-path/1 paths))
     ;;(code:add_pathsa paths))
     ;; Add project app test paths
-  (add-test-paths state))
+  (-> state
+      (lr3-repl-util:get-test-paths)
+      (add-test-paths)))
 
 (defun prep-repl ()
     (rebar_api:debug "Prep'ing REPL ..." '())
@@ -98,7 +100,6 @@
   ((_)
    'ok))
 
-
 (defun remove-error-handler
   ((0)
     (rebar_api:warn "Unable to remove simple error_logger handler" '()))
@@ -121,25 +122,10 @@
         (wait-until-user-started (- timeout 100)))
       (_ 'ok))))
 
-(defun add-test-paths (state)
-  (lists:map #'add-app-test-path/1 (rebar_state:project_apps state))
+(defun add-test-paths (paths)
+  (rebar_api:debug "\tTest paths: ~p" `(,paths))
+  (lists:map #'add-path/1 paths)
   (add-cwd-test-path state))
-
-(defun add-app-test-path (app)
-  (-> app
-      (renar_app_info:out_dir)
-      (add-test-path)))
-
-(defun add-cwd-test-path (state)
-  (-> state
-      (rebar_dir:base_dir)
-      (add-test-path)))
-
-(defun add-test-path (path)
-  (-> path
-      (list "test")
-      (filename:join)
-      (add-path)))
 
 (defun add-path (path)
   (rebar_api:debug "\tAdding path ~p ..." `(,path))
