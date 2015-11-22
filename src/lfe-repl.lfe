@@ -25,12 +25,17 @@
                  #(desc ,(info (short-desc)))    ; A longer description
                  #(bare true)                    ; The task can be run by user
                  #(opts (#(config undefined "config" string
-                           (++ "Path to the config file to use. Defaults to the "
-                               "sys_config defined for relx, if present."))
+                           (++ "Path to the config file to use. Defaults to "
+                               "the sys_config defined for relx, if present."))
                          #(name undefined "name" atom
                            "Gives a long name to the node.")
                          #(sname undefined "sname" atom
-                           "Gives a short name to the node.")))))
+                           "Gives a short name to the node.")
+                         #(apps undefined "apps" atom
+                           (++ "A list of apps to boot before starting the "
+                               "shell. (E.g. --apps\napp1,app2,app3) Defaults "
+                               "to rebar.config {shell, [{apps,\nApps}]} or "
+                               "relx apps if not specified."))))))
          (provider (providers:create opts)))
     `#(ok ,(rebar_state:add_provider state provider))))
 
