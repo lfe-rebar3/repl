@@ -27,7 +27,7 @@
     (rebar_api:debug "\tPaths: ~p" `(,paths))
     ;; Add lib dirs to path
     ;; We do the next for debugging, instead of all at once
-    (lists:foreach #'add-path/1 paths)
+    (lists:foreach #'add-path/1 paths))
     ;;(code:add_pathsa paths))
     ;; Add project app test paths
   (add-test-paths state))
