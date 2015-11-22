@@ -30,7 +30,7 @@ Add the required plugins and provider hooks to your ``rebar.config``:
   {'lfe-compile', ".*",
     {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.2.1"}}},
   {'lfe-version', ".*",
-    {git, "https://github.com/lfe-rebar3/repl.git", {tag, "0.1.0"}}}
+    {git, "https://github.com/lfe-rebar3/repl.git", {tag, "0.1.1"}}}
 ]}.
 
 {provider_hooks, [
