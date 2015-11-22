@@ -8,7 +8,7 @@
   (let* ((`#(,opts ,_) (rebar_state:command_parsed_args state))
          (name (proplists:get_value 'name opts))
          (sname (proplists:get_value 'sname opts)))
-    (rebar_api:debug "")
+    (rebar_api:debug "\tShort name: ~p; Long name: ~p" `(,sname ,name))
     (case `#(,name ,sname)
       (#(undefined undefined)
         'ok)
