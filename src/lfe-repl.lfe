@@ -10,6 +10,16 @@
 (defun provider-name () 'repl)
 (defun short-desc () "The LFE rebar3 LFE REPL plugin.")
 (defun deps () '())
+(defun task-options ()
+  `(#(config undefined "config" string
+      ,(++ "Path to the config file to use. Defaults to the sys_config defined "
+           "for relx, if present."))
+    #(name undefined "name" atom "Gives a long name to the node.")
+    #(sname undefined "sname" atom "Gives a short name to the node.")
+    #(apps undefined "apps" atom
+      ,(++ "A list of apps to boot before starting the shell. (E.g. --apps\n"
+           "app1,app2,app3) Defaults to rebar.config {shell, [{apps,\nApps}]} "
+           "or relx apps if not specified."))))
 
 ;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;;; Public API
@@ -24,18 +34,7 @@
                  #(short_desc ,(short-desc))     ; A one-line description
                  #(desc ,(info (short-desc)))    ; A longer description
                  #(bare true)                    ; The task can be run by user
-                 #(opts (#(config undefined "config" string
-                           (++ "Path to the config file to use. Defaults to "
-                               "the sys_config defined for relx, if present."))
-                         #(name undefined "name" atom
-                           "Gives a long name to the node.")
-                         #(sname undefined "sname" atom
-                           "Gives a short name to the node.")
-                         #(apps undefined "apps" atom
-                           (++ "A list of apps to boot before starting the "
-                               "shell. (E.g. --apps\napp1,app2,app3) Defaults "
-                               "to rebar.config {shell, [{apps,\nApps}]} or "
-                               "relx apps if not specified."))))))
+                 #(opts ,(task-options))))
          (provider (providers:create opts)))
     `#(ok ,(rebar_state:add_provider state provider))))
 
@@ -71,7 +70,7 @@
 ;;; Internal functions
 ;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-(defun info (desc)
+(defun info (short-desc)
   (io_lib:format
     (++ "~n~s~n~n"
         "Start an LFE REPL for a project with its dependencies preloaded, "
@@ -79,4 +78,4 @@
         "'lfe -pa ebin -pa deps/*/ebin' with support for -name "
         "and -sname parameters."
         "~n")
-    `(,desc)))
+    `(,short-desc)))
