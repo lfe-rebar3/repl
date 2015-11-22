@@ -23,16 +23,14 @@
 
 (defun set-paths (state)
   (rebar_api:debug "Setting up paths ..." '())
-  (let ((paths (rebar_state:code_paths state 'all_deps)))
-    (rebar_api:debug "\tPaths: ~p" `(,paths))
-    ;; Add lib dirs to path
-    ;; We do the next for debugging, instead of all at once
-    (lists:foreach #'add-path/1 paths))
-    ;;(code:add_pathsa paths))
-    ;; Add project app test paths
+  (rebar_api:debug "\tAdding app paths ..." '())
+  (-> state
+      (rebar_state:code_paths 'all_deps)
+      (add-paths))
+  (rebar_api:debug "\tAdding test paths ..." '())
   (-> state
       (lr3-repl-util:get-test-paths)
-      (add-test-paths)))
+      (add-paths)))
 
 (defun prep-repl ()
     (rebar_api:debug "Prep'ing REPL ..." '())
@@ -122,10 +120,9 @@
         (wait-until-user-started (- timeout 100)))
       (_ 'ok))))
 
-(defun add-test-paths (paths)
-  (rebar_api:debug "\tTest paths: ~p" `(,paths))
-  (lists:map #'add-path/1 paths)
-  (add-cwd-test-path state))
+(defun add-paths (paths)
+  (rebar_api:debug "\tPaths: ~p" `(,paths))
+  (lists:map #'add-path/1 paths))
 
 (defun add-path (path)
   (rebar_api:debug "\tAdding path ~p ..." `(,path))
