@@ -11,7 +11,7 @@
 (defun short-desc () "The LFE rebar3 LFE REPL plugin.")
 (defun deps () '())
 (defun task-options ()
-    `(#(name undefined "name" atom "Gives a long name to the node.")
+  `(#(name undefined "name" atom "Gives a long name to the node.")
     #(sname undefined "sname" atom "Gives a short name to the node.")
     #(apps undefined "apps" atom
       ,(++ "A list of apps to boot before starting the shell. (E.g. --apps "
@@ -36,11 +36,6 @@
     `#(ok ,(rebar_state:add_provider state provider))))
 
 (defun do (state)
-  (rebar_api:info "All deps: ~p" `(,(rebar_state:all_deps state)))
-  ;;(rebar_state:update_code_paths
-  ;;  state )
-  (code:add_pathsa
-    (rebar_state:code_paths state 'all_deps))
   (lr3-repl-setup:set-name state)
   (lr3-repl-setup:set-paths state)
   (lr3-repl-setup:prep-repl)
@@ -57,7 +52,9 @@
                              #(local rebar_agent)
                              'hibernate))
     (_
-      (error #(init-error "Failed to initialize rebar agent state."))))
+      (let ((msg "Failed to initialize rebar agent state."))
+        (rebar_api:error msg '())
+        (error #(init-error msg)))))
   `#(ok ,state))
 
 (defun format_error (reason)

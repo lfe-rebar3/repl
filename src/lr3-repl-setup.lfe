@@ -126,7 +126,7 @@
 
 (defun add-path (path)
   (rebar_api:debug "\tAdding path ~p ..." `(,path))
-  (code:add_path path))
+  (code:add_patha path))
 
 (defun register-agent (pid)
   (rebar_api:debug "Registering rebar_agent ..." '())

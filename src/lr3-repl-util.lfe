@@ -4,7 +4,7 @@
 (include-lib "clj/include/compose.lfe")
 
 (defun get-apps (state)
-  (rebar_api:debug "\tGetting apps ...")
+  (rebar_api:debug "\tGetting apps ..." '())
   (case (rebar_state:current_app state)
     ('undefined
       (let ((apps (rebar_state:project_apps state)))
@@ -16,8 +16,8 @@
 
 (defun get-base-dirs (state)
   (lists:append
-    (list (get-base-dir state)
-          (get-apps-base-dirs (get-apps state)))))
+    (list (get-base-dir state))
+    (get-apps-base-dirs (get-apps state))))
 
 (defun get-base-dir (state)
   (let ((base-dir (rebar_dir:root_dir state)))
@@ -28,7 +28,6 @@
   (lists:map #'rebar_app_info:out_dir/1 apps))
 
 (defun get-test-paths (state)
-  (-> state
+  (->> state
       (get-base-dirs)
-      (list "test")
-      (filename:join)))
+      (lists:map (lambda (x) (filename:join x "test")))))
