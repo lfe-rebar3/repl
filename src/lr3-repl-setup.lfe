@@ -23,6 +23,7 @@
 (defun set-paths (state)
   (rebar_api:debug "Setting up paths ..." '())
   (let ((paths (rebar_state:code_paths state 'all_deps)))
+    (rebar_api:debug "Paths: ~p" `(,paths))
     (lists:foreach
       (lambda (x)
         (rebar_api:debug "Adding path: ~p" `(,x)))
@@ -49,7 +50,7 @@
         (lists:map #'update-group-leader/1 needs-update))
       (try
         (progn
-          ;; Snable error_logger's tty output
+          ;; Enable error_logger's tty output
           (error_logger:swap_handler 'tty)
           ;; Disable the simple error_logger (which may have been added multiple
           ;; times). removes at most the error_logger added by init and the
