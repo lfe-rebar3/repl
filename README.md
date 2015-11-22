@@ -13,7 +13,7 @@
 * [Use](#use-)
 
 
-## Build
+## Build [&#x219F;](#contents)
 
 
 ```bash
@@ -21,7 +21,7 @@ $ rebar3 compile
 ```
 
 
-## Use
+## Use [&#x219F;](#contents)
 
 Add the required plugins and provider hooks to your ``rebar.config``:
 
