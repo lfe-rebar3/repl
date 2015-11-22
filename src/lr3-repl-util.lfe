@@ -20,7 +20,7 @@
           (get-apps-base-dirs (get-apps state)))))
 
 (defun get-base-dir (state)
-  (let ((base-dir (rebar_dir:base_dir state)))
+  (let ((base-dir (rebar_dir:root_dir state)))
     (rebar_api:debug "\tGot project base dir ~p" `(,base-dir))
     base-dir))
 
