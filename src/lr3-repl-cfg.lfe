@@ -1,4 +1,4 @@
-(defmodule lfe-repl-cfg
+(defmodule lr3-repl-cfg
   (export all))
 
 (include-lib "clj/include/compose.lfe")

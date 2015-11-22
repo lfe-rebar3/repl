@@ -1,4 +1,4 @@
-(defmodule lfe-repl-app
+(defmodule lr3-repl-app
   (export all))
 
 (include-lib "clj/include/compose.lfe")
@@ -7,11 +7,11 @@
   (case (find-bootable-apps state)
     ('undefined
       ;; try to read in sys.config file
-      (lfe-repl-cfg:reread state))
+      (lr3-repl-cfg:reread state))
     (apps
       ;; load apps, then check config, then boot them
       (load-apps apps)
-      (lfe-repl-cfg:reread state)
+      (lr3-repl-cfg:reread state)
       (boot-apps apps))))
 
 
