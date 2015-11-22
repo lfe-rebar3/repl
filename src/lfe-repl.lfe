@@ -18,7 +18,7 @@
     #(sname undefined "sname" atom "Gives a short name to the node.")
     #(apps undefined "apps" atom
       ,(++ "A list of apps to boot before starting the shell. (E.g. --apps"
-           "app1,app2,app3) Defaults to rebar.config {shell,\n[{apps, Apps}]} "
+           "app1,app2,app3) Defaults to rebar.config {shell, [{apps, Apps}]} "
            "or relx apps if not specified."))))
 
 ;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
