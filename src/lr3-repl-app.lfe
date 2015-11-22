@@ -14,7 +14,6 @@
       (lr3-repl-cfg:reread state)
       (boot-apps apps))))
 
-
 (defun find-bootable-apps (state)
   ;; Try the shell_apps option
   (case (rebar_state:get state 'shell_apps 'undefined)

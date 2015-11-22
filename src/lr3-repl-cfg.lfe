@@ -5,7 +5,8 @@
 
 (defun reread (state)
   (case (find state)
-    ('noconfig 'ok)
+    ('no-config
+      'ok)
     (config-list
       (lists:map #'update-env/1 config-list))))
 
@@ -15,7 +16,7 @@
 
 (defun find (state)
   (case (find-option state)
-    ('no_config
+    ('no-config
       (find-relx state))
     (result result)))
 
@@ -23,7 +24,7 @@
   (let ((`#(,opts ,_) (rebar_state:command_parsed_args state)))
     (case (proplists:get_value 'config opts)
       ('undefined
-        'no_config)
+        'no-config)
       (filename
         (consult-cfg state filename)))))
 
@@ -31,7 +32,7 @@
   (let ((opts (rebar_state:get state 'relx '())))
     (case (proplists:get_value 'sys_config opts)
       ('undefined
-        'no_config)
+        'no-config)
       (filename
         (consult-cfg state filename)))))
 

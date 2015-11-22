@@ -9,7 +9,7 @@
 (defun namespace () 'lfe)
 (defun provider-name () 'repl)
 (defun short-desc () "The LFE rebar3 LFE REPL plugin.")
-(defun deps () '())
+(defun deps () '(compile))
 (defun task-options ()
   `(#(name undefined "name" atom "Gives a long name to the node.")
     #(sname undefined "sname" atom "Gives a short name to the node.")
@@ -23,8 +23,11 @@
 ;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 (defun init (state)
+  (init state (MODULE)))
+
+(defun init (state module)
   (let* ((opts `(#(name ,(provider-name))        ; The 'user friendly' name
-                 #(module ,(MODULE))             ; The module implementation
+                 #(module ,module)               ; The module implementation
                  #(namespace ,(namespace))       ; Plugin namespace
                  #(deps ,(deps))                 ; The list of dependencies
                  #(example "rebar3 lfe repl")    ; How to use the plugin
