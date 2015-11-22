@@ -77,7 +77,10 @@
   ((`(#(,app ,_version load) . ,tail))
     (cons app (load-apps-normalized tail)))
   ((`(,app . ,tail)) (when (is_atom app))
-    (cons app (load-apps-normalized tail))))
+    (cons app (load-apps-normalized tail)))
+  ((x)
+   (rebar_api:error "Got unexpected arg in load-apps-normalized: ~p" `(,x))
+   x))
 
 (defun boot-apps-normalized
   (('())
