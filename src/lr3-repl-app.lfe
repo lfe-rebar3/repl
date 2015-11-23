@@ -3,7 +3,7 @@
 
 (include-lib "clj/include/compose.lfe")
 
-(defun boot-existing-apps (state)
+(defun boot-check (state)
   (case (find-bootable-apps state)
     ('undefined
       ;; try to read in sys.config file
@@ -50,13 +50,13 @@
     (_
       'error)))
 
-(defun boot-apps (apps)
+(defun boot-apps (state)
   (rebar_api:warn (++ "The rebar3 lfe REPL is a development tool; to deploy "
                       "applications in production, ~n     consider using "
                       "releases (http://www.rebar3.org/v3.0/docs/releases)")
                   '())
   (rebar_api:debug "Booting apps ..." '())
-  (->> apps
+  (->> state
        (rebar_state:project_apps)
        (load-apps-normalized)
        (boot-and-report))

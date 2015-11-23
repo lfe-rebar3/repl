@@ -42,7 +42,7 @@
   (lr3-repl-setup:set-name state)
   (lr3-repl-setup:set-paths state)
   (lr3-repl-setup:prep-repl)
-  (lr3-repl-app:boot-apps state)
+  (lr3-repl-app:boot-check state)
   (lr3-repl-setup:simulate-proc-lib)
   (lr3-repl-setup:register-agent (self))
   (rebar_api:debug "Initializing rebar_agent ..." '())

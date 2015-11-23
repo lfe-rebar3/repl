@@ -11,7 +11,7 @@
         (rebar_api:debug "\tState's current app undefined; using ~p" `(,apps))
         apps))
     (app
-      (rebar_api:debug "\tGot app ~s" `(,app))
+      (rebar_api:debug "\tGot app ~p" `(,app))
       (list app))))
 
 (defun get-base-dirs (state)
