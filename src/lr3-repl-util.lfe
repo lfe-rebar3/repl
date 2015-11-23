@@ -31,3 +31,8 @@
   (->> state
       (get-base-dirs)
       (lists:map (lambda (x) (filename:join x "test")))))
+
+(defun filter-loaded (app loaded)
+  (case (not (lists:keymember app 1 loaded))
+    ('true `#(true ,app))
+    (_ 'false)))

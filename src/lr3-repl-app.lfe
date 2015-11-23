@@ -31,13 +31,9 @@
   (let ((loaded (application:loaded_applications)))
     (->> apps
         (load-apps-normalized)
-        (lists:filtermap (lambda (app) (filter-loaded app loaded)))
+        (lists:filtermap (lambda (app)
+                           (lr3-repl-util:filter-loaded app loaded)))
         (lists:map #'load-app/1))))
-
-(defun filter-loaded (app loaded)
-  (case (not (lists:keymember app 1 loaded))
-    ('true `#(true ,app))
-    (_ 'false)))
 
 (defun load-app (app)
   (case (application:load app)
