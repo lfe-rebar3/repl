@@ -47,10 +47,6 @@
       'error)))
 
 (defun boot-apps (state)
-  (rebar_api:warn (++ "The rebar3 lfe REPL is a development tool; to deploy "
-                      "applications in production, ~n     consider using "
-                      "releases (http://www.rebar3.org/v3.0/docs/releases)")
-                  '())
   (rebar_api:debug "Booting apps ..." '())
   (->> state
        (rebar_state:project_apps)

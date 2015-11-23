@@ -39,6 +39,10 @@
     `#(ok ,(rebar_state:add_provider state provider))))
 
 (defun do (state)
+  (rebar_api:warn (++ "The rebar3 lfe REPL is a development tool; to deploy "
+                      "applications in production, ~n     consider using "
+                      "releases (http://www.rebar3.org/v3.0/docs/releases)")
+                  '())
   (lr3-repl-setup:set-name state)
   (lr3-repl-setup:set-paths state)
   (lr3-repl-setup:prep-repl)
