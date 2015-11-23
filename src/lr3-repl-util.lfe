@@ -8,7 +8,7 @@
   (case (rebar_state:current_app state)
     ('undefined
       (let ((apps (rebar_state:project_apps state)))
-        (rebar_api:debug "\tState's current app undefined; using ~s" `(,apps))
+        (rebar_api:debug "\tState's current app undefined; using ~p" `(,apps))
         apps))
     (app
       (rebar_api:debug "\tGot app ~s" `(,app))
