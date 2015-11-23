@@ -12,7 +12,7 @@
       ;; load apps, then check config, then boot them
       (load-apps apps)
       (lr3-repl-cfg:reread state)
-      (boot-apps state)))
+      (boot-apps state))))
 
 (defun find-bootable-apps (state)
   ;; Try the shell_apps option
