@@ -9,7 +9,7 @@
 (defun namespace () 'lfe)
 (defun provider-name () 'repl)
 (defun short-desc () "The LFE rebar3 LFE REPL plugin.")
-(defun deps () '(#(default shell)))
+(defun deps () '(#(default lock)))
 (defun task-options ()
   `(#(name undefined "name" atom "Gives a long name to the node.")
     #(sname undefined "sname" atom "Gives a short name to the node.")
