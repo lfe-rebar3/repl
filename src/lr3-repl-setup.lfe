@@ -30,7 +30,13 @@
   (rebar_api:debug "\tAdding test paths ..." '())
   (-> state
       (lr3-repl-util:get-test-paths)
-      (add-paths)))
+      (add-paths))
+  (rebar_api:debug "\tAdding project's ebin path ..." '())
+  (-> state
+      (rebar_dir:root_dir)
+      (list "ebin")
+      (filename:join)
+      (add-path)))
 
 (defun prep-repl ()
     (rebar_api:debug "Prep'ing REPL ..." '())
