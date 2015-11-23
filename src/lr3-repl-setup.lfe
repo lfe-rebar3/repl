@@ -85,7 +85,7 @@
   ((pid)
     (if (is_process_alive pid)
       (progn
-        (rebar_api:debug "Updating group leader ..." '())
+        (rebar_api:debug "\tUpdating group leader ..." '())
         (erlang:group_leader (whereis 'user) pid)))))
 
 
