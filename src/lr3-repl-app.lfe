@@ -38,10 +38,10 @@
 (defun load-app (app)
   (case (application:load app)
     ('ok
-      (->> app
-           (application:get_all_key)
-           (proplists:get_value 'applications)
-           (load-apps)))
+     (let ((`#(ok ,ks) (application:get_all_key app)))
+       (->> ks
+            (proplists:get_value 'applications)
+            (load-apps))))
     ;; This will be caught when starting the app in the event of an error.
     (_
       'error)))
