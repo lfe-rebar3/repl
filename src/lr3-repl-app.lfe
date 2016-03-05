@@ -1,19 +1,18 @@
-(defmodule lfe-repl-app
+(defmodule lr3-repl-app
   (export all))
 
 (include-lib "clj/include/compose.lfe")
 
-(defun boot-existing-apps (state)
+(defun boot-check (state)
   (case (find-bootable-apps state)
     ('undefined
       ;; try to read in sys.config file
-      (lfe-repl-cfg:reread state))
+      (lr3-repl-cfg:reread state))
     (apps
       ;; load apps, then check config, then boot them
       (load-apps apps)
-      (lfe-repl-cfg:reread state)
-      (boot-apps apps))))
-
+      (lr3-repl-cfg:reread state)
+      (boot-apps state))))
 
 (defun find-bootable-apps (state)
   ;; Try the shell_apps option
@@ -32,36 +31,32 @@
   (let ((loaded (application:loaded_applications)))
     (->> apps
         (load-apps-normalized)
-        (lists:filtermap (lambda (app) (filter-loaded app loaded)))
+        (lists:filtermap (lambda (app)
+                           (lr3-repl-util:filter-loaded app loaded)))
         (lists:map #'load-app/1))))
-
-(defun filter-loaded (app loaded)
-  (case (not (lists:keymember app 1 loaded))
-    ('true `#(true ,app))
-    ('false 'false)))
 
 (defun load-app (app)
   (case (application:load app)
     ('ok
-      (->> app
-           (application:get_all_key)
-           (proplists:get_value 'applications)
-           (load-apps)))
+     (let ((`#(ok ,ks) (application:get_all_key app)))
+       (->> ks
+            (proplists:get_value 'applications)
+            (load-apps))))
     ;; This will be caught when starting the app in the event of an error.
     (_
       'error)))
 
-(defun boot-apps (apps)
-  (rebar_api:warn (++ "The rebar3 shell is a development tool; to deploy "
-                      "applications in production, consider using releases "
-                      "(http://www.rebar3.org/v3.0/docs/releases)")
-                  '())
+(defun boot-apps (state)
   (rebar_api:debug "Booting apps ..." '())
-  (->> apps
+  (->> state
+       (rebar_state:project_apps)
        (load-apps-normalized)
-       (lists:map #'application:ensure_all_started/1)
-       (lists:foreach #'report-boot-status/1))
+       (boot-and-report))
   'ok)
+
+(defun boot-and-report (apps)
+  (lists:map #'application:ensure_all_started/1 apps)
+  (lists:foreach #'report-boot-status/1 apps))
 
 (defun report-boot-status
   ((`#(ok ,booted))
@@ -77,7 +72,10 @@
   ((`(#(,app ,_version load) . ,tail))
     (cons app (load-apps-normalized tail)))
   ((`(,app . ,tail)) (when (is_atom app))
-    (cons app (load-apps-normalized tail))))
+    (cons app (load-apps-normalized tail)))
+  ((x)
+   (rebar_api:error "Got unexpected arg in load-apps-normalized: ~p" `(,x))
+   x))
 
 (defun boot-apps-normalized
   (('())

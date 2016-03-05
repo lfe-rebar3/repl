@@ -1,4 +1,4 @@
-(defmodule lfe-repl-setup
+(defmodule lr3-repl-setup
   (export all))
 
 (include-lib "clj/include/compose.lfe")
@@ -8,6 +8,7 @@
   (let* ((`#(,opts ,_) (rebar_state:command_parsed_args state))
          (name (proplists:get_value 'name opts))
          (sname (proplists:get_value 'sname opts)))
+    (rebar_api:debug "\tShort name: ~p; Long name: ~p" `(,sname ,name))
     (case `#(,name ,sname)
       (#(undefined undefined)
         'ok)
@@ -22,10 +23,20 @@
 
 (defun set-paths (state)
   (rebar_api:debug "Setting up paths ..." '())
-  ;; Add lib dirs to path
-  (code:add_pathsa (rebar_state:code_paths state 'all_deps))
-  ;; Add project app test paths
-  (add-test-paths state))
+  (rebar_api:debug "\tAdding app paths ..." '())
+  (-> state
+      (rebar_state:code_paths 'all_deps)
+      (add-paths))
+  (rebar_api:debug "\tAdding test paths ..." '())
+  (-> state
+      (lr3-repl-util:get-test-paths)
+      (add-paths))
+  (rebar_api:debug "\tAdding project's ebin path ..." '())
+  (-> state
+      (rebar_dir:root_dir)
+      (list "ebin")
+      (filename:join)
+      (add-path)))
 
 (defun prep-repl ()
     (rebar_api:debug "Prep'ing REPL ..." '())
@@ -33,18 +44,18 @@
     ;; to update later
     (let ((needs-update (lists:filtermap #'needs-update?/1 (erlang:processes))))
       ;; Start a new shell (this also starts a new user under the correct group)
-      (rebar_api:debug "Starting LFE REPL process ..." '())
-      (lfe_shell:server)
+      (rebar_api:debug "\tStarting LFE REPL process ..." '())
+      (spawn #'lfe_shell:server/0)
       ;; Wait until processes have been registered
       (wait-until-user-started 3000)
       ;; Set any process that had a reference to the old user's group leader to
       ;; the new user process. Catch the race condition when the Pid exited
       ;; after the liveness check.
       (catch
-        (lists:map #'update-group-leader/1 needs-update))
+        (lists:foreach #'update-group-leader/1 needs-update))
       (try
         (progn
-          ;; Snable error_logger's tty output
+          ;; Enable error_logger's tty output
           (error_logger:swap_handler 'tty)
           ;; Disable the simple error_logger (which may have been added multiple
           ;; times). removes at most the error_logger added by init and the
@@ -52,7 +63,7 @@
           (remove-error-handler 3))
         (catch
           (`#(,err ,msg ,trace) ; may fail with custom loggers
-            (rebar_api:debug "Logger changes failed for ~p:~p (~p)"
+            (rebar_api:debug "\tLogger changes failed for ~p:~p (~p)"
                              `(,err ,msg ,trace))
             'hope-for-best)))))
 
@@ -73,7 +84,9 @@
 (defun update-group-leader
   ((pid)
     (if (is_process_alive pid)
-        (erlang:group_leader (whereis 'user) pid))))
+      (progn
+        (rebar_api:debug "\tUpdating group leader ..." '())
+        (erlang:group_leader (whereis 'user) pid)))))
 
 
 (defun simulate-proc-lib ()
@@ -90,7 +103,6 @@
                      '()))
   ((_)
    'ok))
-
 
 (defun remove-error-handler
   ((0)
@@ -114,25 +126,13 @@
         (wait-until-user-started (- timeout 100)))
       (_ 'ok))))
 
-(defun add-test-paths (state)
-  (lists:map #'add-app-test-path/1 (rebar_state:project_apps state))
-  (add-cwd-test-path state))
+(defun add-paths (paths)
+  (rebar_api:debug "\tPaths: ~p" `(,paths))
+  (lists:map #'add-path/1 paths))
 
-(defun add-app-test-path (app)
-  (-> app
-      (renar_app_info:out_dir)
-      (add-test-path)))
-
-(defun add-cwd-test-path (state)
-  (-> state
-      (rebar_dir:base_dir)
-      (add-test-path)))
-
-(defun add-test-path (path)
-  (-> path
-      (list "test")
-      (filename:join)
-      (code:add_path)))
+(defun add-path (path)
+  (rebar_api:debug "\tAdding path ~p ..." `(,path))
+  (code:add_patha path))
 
 (defun register-agent (pid)
   (rebar_api:debug "Registering rebar_agent ..." '())
@@ -140,4 +140,6 @@
     ('true
       'ok)
     (_
-      (error #(registration-error "Failed to register rebar agent process.")))))
+      (let ((msg "Failed to register rebar agent process"))
+        (rebar_api:error msg '())
+        (error #(registration-error msg))))))
