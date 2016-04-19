@@ -28,9 +28,9 @@ Add the required plugins and provider hooks to your ``rebar.config``:
 ```erlang
 {plugins, [
   {'lfe-compile',
-    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.3.0"}}},
+    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.4.0"}}},
   {'lfe-repl',
-    {git, "https://github.com/lfe-rebar3/repl.git", {tag, "0.2.0"}}}
+    {git, "https://github.com/lfe-rebar3/repl.git", {tag, "0.2.1"}}}
 ]}.
 
 {provider_hooks, [
