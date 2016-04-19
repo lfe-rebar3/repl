@@ -2,7 +2,7 @@
 
 *The LFE rebar3 REPL plugin*
 
-[lr3-logo]: resources/images/logo.png
+[lr3-logo]: priv/images/logo.png
 
 [![][lr3-logo]][lr3-logo]
 
