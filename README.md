@@ -1,3 +1,7 @@
+# DEPRECATED / ARCHIVED
+
+This functionality is now available in the far more streamlined project https://github.com/lfe-rebar3/rebar3_lfe
+
 # lfe-repl
 
 *The LFE rebar3 REPL plugin*
